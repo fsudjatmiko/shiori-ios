@@ -1,0 +1,10 @@
+# Xcode & User Scheme Settings
+xcuserdata/
+*.xcworkspace/xcuserdata/
+*.xcuserdatad/
+DerivedData/
+.build/
+.DS_Store
+
+# Temporary agent files
+.specs/references/*.tmp
