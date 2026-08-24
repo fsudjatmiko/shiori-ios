@@ -115,7 +115,6 @@
 			);
 			fileSystemSynchronizedGroups = (
 				D30D3E993037F4C60058AD2E /* Shiori */,
-				D30D3ED93037F8410058AD2E /* .agents */,
 			);
 			name = Shiori;
 			packageProductDependencies = (

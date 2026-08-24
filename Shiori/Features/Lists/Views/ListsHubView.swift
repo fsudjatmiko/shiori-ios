@@ -12,7 +12,10 @@ public struct ListsHubView: View {
                 VStack(spacing: 20) {
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(SmartCategory.allCases) { category in
-                            SmartCategoryCardView(category: category, count: 0)
+                            NavigationLink(value: category) {
+                                SmartCategoryCardView(category: category, count: 0)
+                            }
+                            .buttonStyle(.plain)
                         }
                     }
                     .padding(.horizontal)
@@ -57,6 +60,9 @@ public struct ListsHubView: View {
             .background(Color(.systemGroupedBackground))
             .navigationTitle("Lists")
             .navigationBarTitleDisplayMode(.inline)
+            .navigationDestination(for: SmartCategory.self) { category in
+                BookmarkListView(category: category)
+            }
             .safeAreaInset(edge: .bottom) {
                 ListsBottomBarView()
             }
