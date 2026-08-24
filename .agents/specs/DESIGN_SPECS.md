@@ -56,3 +56,29 @@ trigger: always_on
 - **Swipe Actions:**
   - Leading: Toggle Star (`star.fill` / `.yellow`)
   - Trailing: Delete (`trash.fill` / `.destructive`)
+
+# Active Design Specification: Shiori (Apple-Native Subpage & Standard Chrome)
+
+## 1. Top Navigation Chrome
+- Leading: Back chevron.
+- Center/Title: Category or Kind title (`.navigationBarTitleDisplayMode(.inline)`).
+- Trailing Toolbar: Native `Menu` (`ellipsis.circle`) and Quick Search (`magnifyingglass`).
+- No commercial / `PRO` promotional badges.
+
+## 2. Feed List & Native Context Actions
+- Container: Standard `List` with `.listStyle(.insetGrouped)`.
+- Row Selection: Tap opens native sheet/popover or long-press `.contextMenu` instead of custom inline bars.
+- Native Context Menu Actions (per kind):
+  - **Link:** Copy Link (`doc.on.doc`), Open in Safari (`safari`), Share (`square.and.arrow.up`).
+  - **File:** Quick Look (`eye`), Share (`square.and.arrow.up`), Delete (`trash`, destructive).
+  - **Image:** Quick Look (`eye`), Save Image (`square.and.arrow.down`), Share (`square.and.arrow.up`).
+  - **Note:** Copy Text (`doc.on.doc`), Edit (`pencil`), Share (`square.and.arrow.up`).
+
+## 3. Persistent Apple-Native Bottom Chrome
+- Standard `.toolbar { ToolbarItemGroup(placement: .bottomBar) { ... } }`:
+  1. Add Note: `Image(systemName: "square.and.pencil")`
+  2. Quick Search: `Image(systemName: "magnifyingglass")` (opens quick command search sheet)
+  3. Add Image: `Image(systemName: "photo")`
+  4. Add File: `Image(systemName: "doc.badge.plus")`
+  5. Settings: `Image(systemName: "gearshape")`
+- Distribute icons evenly using native `Spacer()`.

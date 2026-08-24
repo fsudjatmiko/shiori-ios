@@ -24,20 +24,24 @@ public struct ListsHubView: View {
                         DisclosureGroup(isExpanded: $isKindsExpanded) {
                             VStack(spacing: 0) {
                                 ForEach(ContentKind.allCases) { kind in
-                                    HStack(spacing: 12) {
-                                        Image(systemName: kind.systemImage)
-                                            .foregroundStyle(kind.colorTint)
-                                            .frame(width: 24)
-                                        Text(kind.title)
-                                            .font(.body)
-                                            .foregroundStyle(.primary)
-                                        Spacer()
-                                        Image(systemName: "chevron.right")
-                                            .font(.footnote.weight(.semibold))
-                                            .foregroundStyle(Color(.tertiaryLabel))
+                                    NavigationLink(value: kind) {
+                                        HStack(spacing: 12) {
+                                            Image(systemName: kind.systemImage)
+                                                .foregroundStyle(kind.colorTint)
+                                                .frame(width: 24)
+                                            Text(kind.title)
+                                                .font(.body)
+                                                .foregroundStyle(.primary)
+                                            Spacer()
+                                            Image(systemName: "chevron.right")
+                                                .font(.footnote.weight(.semibold))
+                                                .foregroundStyle(Color(.tertiaryLabel))
+                                        }
+                                        .padding(.vertical, 12)
+                                        .padding(.horizontal, 16)
                                     }
-                                    .padding(.vertical, 12)
-                                    .padding(.horizontal, 16)
+                                    .buttonStyle(.plain)
+
                                     if kind != ContentKind.allCases.last {
                                         Divider().padding(.leading, 52)
                                     }
@@ -62,6 +66,9 @@ public struct ListsHubView: View {
             .navigationBarTitleDisplayMode(.inline)
             .navigationDestination(for: SmartCategory.self) { category in
                 BookmarkListView(category: category)
+            }
+            .navigationDestination(for: ContentKind.self) { kind in
+                BookmarkListView(kind: kind)
             }
             .safeAreaInset(edge: .bottom) {
                 ListsBottomBarView()
