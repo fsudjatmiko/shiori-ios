@@ -15,7 +15,7 @@ public struct BookmarkItemRowView: View {
                 .fill(item.kind.colorTint.opacity(0.15))
                 .frame(width: 30, height: 30)
                 .overlay {
-                    Image(systemName: item.previewImageName ?? item.iconName)
+                    Image(systemName: item.kind.systemImage)
                         .font(.footnote.weight(.semibold))
                         .foregroundStyle(item.kind.colorTint)
                 }
@@ -25,7 +25,7 @@ public struct BookmarkItemRowView: View {
                     .font(.body.weight(.medium))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
-                Text(item.subtitle)
+                Text(item.formattedSubtitle)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)

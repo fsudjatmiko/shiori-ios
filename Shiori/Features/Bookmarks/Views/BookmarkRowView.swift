@@ -31,7 +31,7 @@ public struct BookmarkRowView: View {
                     .font(.body.weight(.medium))
                     .foregroundStyle(.primary)
                     .lineLimit(1)
-                Text(item.host)
+                Text(item.formattedSubtitle)
                     .font(.caption)
                     .foregroundStyle(.secondary)
                     .lineLimit(1)

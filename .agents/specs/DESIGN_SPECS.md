@@ -82,3 +82,46 @@ trigger: always_on
   4. Add File: `Image(systemName: "doc.badge.plus")`
   5. Settings: `Image(systemName: "gearshape")`
 - Distribute icons evenly using native `Spacer()`.
+
+
+# Active Design Specification: Shiori (SwiftData Persistence & Creation Flows)
+
+## 1. SwiftData Schema (`BookmarkItem`)
+- `@Model final class BookmarkItem`:
+  - `id: UUID` (unique)
+  - `title: String`
+  - `contentURL: String?`
+  - `noteContent: String?`
+  - `imageData: Data?`
+  - `fileData: Data?`
+  - `fileName: String?`
+  - `fileSize: Int64?`
+  - `categoryRaw: String` (maps to `SmartCategory`)
+  - `kindRaw: String` (maps to `ContentKind`)
+  - `isStarred: Bool`
+  - `createdAt: Date`
+  - `updatedAt: Date`
+
+## 2. Dynamic Filtering Predicates
+- Top categories filter by `categoryRaw` or `isStarred` / `createdAt` (Today).
+- Kinds feed filters strictly by `kindRaw` (link, note, image, file).
+- Dynamic count badges on `ListsHubView` reflect `@Query` item counts.
+
+## 3. Creation Modal Flows
+- Native sheets with `.presentationDetents([.medium, .large])`.
+- Auto-dismiss on save via `@Environment(\.dismiss)`.
+- Context insert via `modelContext.insert(item)`.
+
+# Active Design Specification: Shiori (Native Media & Link Pickers)
+
+## 1. Media Picker Capabilities
+- **Images:** Integrated `PhotosPicker(selection: $selectedPhotoItem, matching: .images)` from `PhotosUI`. Reads raw `Data` asynchronously and shows an inline `200x120` preview banner before saving.
+- **Links:** Dedicated `TextField("https://example.com", text: $urlString)` with `.keyboardType(.URL)`, `.autocapitalization(.none)`, and instant domain extraction preview.
+- **Files:** Native `.fileImporter(isPresented: $showFileImporter, allowedContentTypes: [.item])` accessing `URL` securely to extract file name, byte size, and raw payload.
+
+## 2. Validation Rules
+- Save button is disabled if required content is missing:
+  - Links require a non-empty, valid URL string.
+  - Notes require non-empty text.
+  - Images require a loaded `Data` payload.
+  - Files require a selected file reference.
