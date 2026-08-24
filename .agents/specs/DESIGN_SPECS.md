@@ -125,3 +125,74 @@ trigger: always_on
   - Notes require non-empty text.
   - Images require a loaded `Data` payload.
   - Files require a selected file reference.
+
+  # Active Design Specification: Shiori (Item Tap Actions & Editing)
+
+## 1. Tap Interactions
+- Tapping a row triggers `.confirmationDialog` or an action sheet for that `BookmarkItem`.
+- Action Dialog Buttons:
+  - **Open / View:** `safari` / `eye`
+  - **Copy Content / Link:** `doc.on.doc`
+  - **Edit Item:** `pencil`
+  - **Delete:** `trash` (role: `.destructive`)
+  - **Cancel:** (role: `.cancel`)
+
+## 2. Edit Flow
+- Editing presents `EditBookmarkItemSheet` (.presentationDetents([.medium, .large])).
+- Changes mutate the `@Model` directly and save automatically into SwiftData `modelContext`.
+
+# Active Design Specification: Shiori (Centered Action Card & Media Preview)
+
+## 1. Centered Apple Action Modal
+- **Layout:** Centered floating card with continuous corner radius `24pt`.
+- **Card Background:** `Color(.secondarySystemGroupedBackground)` with subtle elevation shadow.
+- **Dimmer:** Dimmed background scrim `Color.black.opacity(0.4)` with tap-to-dismiss.
+- **Content Hierarchy:**
+  - Item Title: `.font(.headline.weight(.semibold))`.
+  - Subtitle / Meta: `.font(.subheadline).foregroundStyle(.secondary)`.
+  - **Inline Media Preview:**
+    - For Images: Displays the stored image `Data` as a scaled-to-fit rounded preview banner (max height `180pt`).
+    - For Notes: Displays a scrollable quote-styled text preview block.
+    - For Links: Shows formatted URL host domain badge.
+- **Button Group (Stacked Vertical Buttons):**
+  - Primary Action (Open / Safari / Fullscreen): Filled blue button style (`.background(Color.accentColor)`).
+  - Secondary Action (Copy): Light gray filled button (`.background(Color(.secondarySystemFill))`).
+  - Tertiary Action (Edit): Light gray filled button (`.background(Color(.secondarySystemFill))`).
+  - Destructive Action (Delete): Red text button or subtle red pill.
+
+  # Active Design Specification: Shiori (Apple-Native Confirmation Dialog)
+
+
+## 2. Dialog Actions (Per Item)
+- Primary Action: "Open in Safari" (for `.link`) / "Quick Look" (for `.image`, `.file`, `.note`).
+- Secondary Action: "Copy Link" / "Copy Text" (copies to `UIPasteboard.general.string`).
+- Tertiary Action: "Edit" (presents `EditBookmarkItemSheet`).
+- Destructive Action: "Delete" with `role: .destructive` (removes from `modelContext`).
+- Cancel Action: `role: .cancel` (auto-dismisses).
+
+# Active Design Specification: Shiori (Image Full Preview)
+
+## 1. Image Viewer Component (`ImagePreviewSheet.swift`)
+- Native modal sheet / full-screen cover displaying the loaded `UIImage` from `BookmarkItem.imageData`.
+- Features pinch-to-zoom / pan or standard `.scaledToFit()`.
+- Navigation bar with title, timestamp/size, and a leading/trailing "Done" dismissal button.
+
+## 2. Alert Action
+- For `item.kind == .image` (and `item.imageData != nil`), `.alert` presents a "Preview Image" button that sets `@State private var itemToPreview: BookmarkItem?`.
+
+# Active Design Specification: Shiori (Top Sort Menu & Bottom System Bar)
+
+## 1. Top Navigation Bar
+- **Trailing Toolbar Action:** Native `Menu` (`arrow.up.arrow.down` or `ellipsis.circle`) for Sorting:
+  - Option 1: "Date Modified" (`clock`)
+  - Option 2: "Name" (`textformat`)
+  - Option 3: "Kind / Type" (`square.grid.2x2`)
+
+# Active Design Specification: Shiori (Apple HIG Floating Search & Ornament)
+
+## 1. Floating Ornament Architecture
+- **Left Element (Extended Capsule):** Floating capsule spanning available width with `.ultraThinMaterial`, subtle border stroke (`Color.primary.opacity(0.08)`), containing `magnifyingglass` and "Search or open..." text.
+- **Right Element (Circular Action Ornament):** Detached circular button (`Circle()`) with `.ultraThinMaterial`, subtle border stroke, housing a native Apple `Menu` with a standard `plus` icon.
+- **Elevation:** Soft ambient shadow (`color: .black.opacity(0.12), radius: 14, y: 5`) floating over list content.
+
+  
